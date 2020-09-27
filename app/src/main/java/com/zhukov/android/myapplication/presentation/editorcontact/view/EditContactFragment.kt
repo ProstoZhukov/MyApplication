@@ -56,10 +56,11 @@ class EditContactFragment : Fragment(), IEditContactView {
     private var mToolbar: View? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mEditContactPresenter!!.attachView(this)
-        if (arguments != null) {
-            mContactId =
-                UUID.fromString(arguments!!.getString(ARG_CONTACT_EDIT_ID))
+        mEditContactPresenter.attachView(this)
+        mContactId = arguments?.run {
+            getString(ARG_CONTACT_EDIT_ID)?.let {
+                UUID.fromString(it)
+            }
         }
     }
 
@@ -85,12 +86,7 @@ class EditContactFragment : Fragment(), IEditContactView {
         mToolbarTittle = view.findViewById<View>(R.id.toolbar_name) as TextView
         mToolbarBack!!.isClickable = true
         mToolbarBack!!.setOnClickListener {
-            if (getView() != null) {
-                mEditContactPresenter!!.onBackClicked()
-                if (activity != null) {
-                    activity!!.onBackPressed()
-                }
-            }
+            activity?.onBackPressed()
         }
         mPhotoContact =
             view.findViewById<View>(R.id.photo_contact_edit) as ImageView
@@ -124,13 +120,13 @@ class EditContactFragment : Fragment(), IEditContactView {
             view.findViewById<View>(R.id.add_row) as FloatingActionButton
         mFloatingActionButton!!.setOnClickListener { view -> createPopupMenu(context, view) }
         if (savedInstanceState == null) {
-            mEditContactPresenter!!.loadContact(mContactId!!)
+            mEditContactPresenter.loadContact(mContactId!!)
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mEditContactPresenter!!.detachView()
+        mEditContactPresenter.detachView()
         App.get().clearEditContactComponent()
     }
 
@@ -143,44 +139,38 @@ class EditContactFragment : Fragment(), IEditContactView {
     }
 
     override fun updateContact() {
-        if (mMainNumber!!.text.toString() == "") {
-            mMainNumber!!.setHintTextColor(Color.RED)
+        if (mMainNumber!!.text.isEmpty()) {
+            Toast.makeText(context,"Отсутсвует номер телефона!", Toast.LENGTH_SHORT).show()
         } else {
             val contactModel = mContactId?.let { ContactModel(it) }
-            if (contactModel != null) {
-                contactModel.mContactFirstName = (mFirstName!!.text.toString())
-            }
-            if (contactModel != null) {
-                contactModel.mContactLastName = (mSecondName!!.text.toString())
-            }
-            if (contactModel != null) {
-                contactModel.mPatronymic = (mPatronymic!!.text.toString())
-            }
-            if (contactModel != null) {
-                contactModel.mContactMainNumber = (mMainNumber!!.text.toString())
-            }
-            if (contactModel != null) {
-                contactModel.mContactSecondNumber = (mSecondNumber!!.text.toString())
-            }
-            if (contactModel != null) {
-                contactModel.mContactSecondNumber2 = (mSecondNumber2!!.text.toString())
-            }
-            if (contactModel != null) {
-                contactModel.mContactSocialMedia = (mSocialMedia!!.text.toString())
-            }
-            if (contactModel != null) {
-                contactModel.mContactSocialMedia2 = (mSocialMedia2!!.text.toString())
-            }
-            if (contactModel != null) {
-                contactModel.mContactSocialMedia3 = (mSocialMedia3!!.text.toString())
-            }
-            if (contactModel != null) {
-                contactModel.mContactInformation = (mAboutContact!!.text.toString())
-            }
-            if (contactModel != null) {
-                mEditContactPresenter?.updateContact(contactModel)
+            contactModel?.let {
+               it.mContactFirstName = mFirstName!!.text.toString()
+
+               it.mContactLastName = mSecondName!!.text.toString()
+
+               it.mPatronymic = mPatronymic!!.text.toString()
+
+               it.mContactMainNumber = mMainNumber!!.text.toString()
+
+               it.mContactSecondNumber = mSecondNumber!!.text.toString()
+
+               it.mContactSecondNumber2 = mSecondNumber2!!.text.toString()
+
+               it.mContactSocialMedia = mSocialMedia!!.text.toString()
+
+               it.mContactSocialMedia2 = mSocialMedia2!!.text.toString()
+
+               it.mContactSocialMedia3 = mSocialMedia3!!.text.toString()
+
+               it.mContactInformation = mAboutContact!!.text.toString()
+
+                mEditContactPresenter.updateContact(contactModel)
             }
         }
+    }
+
+    override fun showMessageText(text: String) {
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
 
     override fun updatePhoto() {
@@ -197,12 +187,8 @@ class EditContactFragment : Fragment(), IEditContactView {
         if (requestCode == 100 && data != null) {
             val uri = data.data
             mPhotoContact!!.setImageURI(uri)
-            mEditContactPresenter?.photoUriLoaded(uri.toString())
+            mEditContactPresenter.photoUriLoaded(uri.toString())
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return super.onOptionsItemSelected(item)
     }
 
     private fun editContact(contactsModel: ContactModel?) {
@@ -269,11 +255,11 @@ class EditContactFragment : Fragment(), IEditContactView {
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.mnu_fb_social -> {
-                    mEditContactPresenter?.itemAddSocialClicked()
+                    mEditContactPresenter.itemAddSocialClicked()
                     true
                 }
                 R.id.mnu_fb_number -> {
-                    mEditContactPresenter?.itemAddNumberClicked()
+                    mEditContactPresenter.itemAddNumberClicked()
                     true
                 }
                 else -> false

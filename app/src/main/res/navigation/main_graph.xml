@@ -5,10 +5,9 @@
     android:id="@+id/main_graph"
     tools:ignore="UnusedNavigation"
     app:startDestination="@id/contactListFragment">
-
     <fragment
         android:id="@+id/contactListFragment"
-        android:name="com.zhukov.android.myapplicationlist.presentation.listcontact.view.ContactListFragment"
+        android:name="com.zhukov.android.myapplication.presentation.listcontact.view.ContactListFragment"
         android:label="ContactListFragment" />
     <fragment
         android:id="@+id/contactFragment"
@@ -16,6 +15,6 @@
         android:label="ContactFragment" />
     <fragment
         android:id="@+id/editContactFragment"
-        android:name="com.zhukov.android.myapplicationlist.presentation.editorcontact.view.EditContactFragment"
+        android:name="com.zhukov.android.myapplication.presentation.editorcontact.view.EditContactFragment"
         android:label="EditContactFragment" />
 </navigation>

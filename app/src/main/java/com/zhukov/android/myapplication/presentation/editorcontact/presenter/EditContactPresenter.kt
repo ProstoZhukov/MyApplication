@@ -6,7 +6,6 @@ import com.zhukov.android.myapplication.data.database.model.ContactModel
 import com.zhukov.android.myapplication.presentation.editorcontact.view.IEditContactView
 import io.reactivex.disposables.CompositeDisposable
 import java.util.*
-import javax.inject.Inject
 
 
 class EditContactPresenter(iEditContactInteractor: IEditContactInteractor) :
@@ -14,7 +13,7 @@ class EditContactPresenter(iEditContactInteractor: IEditContactInteractor) :
     private var mView: IEditContactView? = null
     private var mContactModel: ContactModel? = null
     private val mDisposer = CompositeDisposable()
-    private val mEditContactInteractor: IEditContactInteractor = iEditContactInteractor
+    private val mInteractor: IEditContactInteractor = iEditContactInteractor
 
     override fun attachView(editContactView: IEditContactView) {
         mView = editContactView
@@ -24,14 +23,11 @@ class EditContactPresenter(iEditContactInteractor: IEditContactInteractor) :
         mView = null
     }
 
-    override fun onBackClicked() {
-        mView?.updateContact()
-    }
 
     override fun loadContact(contactId: UUID) {
         if (mContactModel == null) {
             mDisposer.add(
-                mEditContactInteractor.loadContact(contactId)
+                mInteractor.loadContact(contactId)
                     .subscribe(
                         { contactModel: ContactModel -> this.onSuccess(contactModel) },
                         { throwable: Throwable -> onError(throwable) })
@@ -48,7 +44,7 @@ class EditContactPresenter(iEditContactInteractor: IEditContactInteractor) :
         mContactModel = contactModel
         mView?.updateUI(contactModel)
         mDisposer.add(
-            mEditContactInteractor.updateContact(contactModel)
+            mInteractor.updateContact(contactModel)
                 .subscribe(
                     { onUpdate() },
                     { throwable: Throwable -> onError(throwable) })
@@ -64,7 +60,7 @@ class EditContactPresenter(iEditContactInteractor: IEditContactInteractor) :
     }
 
     private fun onUpdate() {
-        Log.i(TAG, " - контакт был успешно обновлен")
+        mView?.showMessageText("Контакт был успешно обновлен!")
     }
 
     private fun onAdd(id: UUID) {

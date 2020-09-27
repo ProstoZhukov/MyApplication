@@ -31,7 +31,6 @@ class ContactListFragment : Fragment(), IContactListView, ContactAdapter.OnItemC
     private lateinit var mContactAdapter: ContactAdapter
     private lateinit var mFloatingActionButton: FloatingActionButton
     private lateinit var mFilter: ImageView
-    private lateinit var mContactList: ArrayList<ContactModel>
 
     @Inject
     lateinit var mPresenter: IContactListPresenter
@@ -112,18 +111,17 @@ class ContactListFragment : Fragment(), IContactListView, ContactAdapter.OnItemC
     }
 
     override fun openEditContactScreen(contactId: UUID) {
-        if (view != null) {
-            val args = Bundle()
-            args.putString(EditContactFragment.ARG_CONTACT_EDIT_ID, contactId.toString())
-            Navigation.findNavController(view!!).navigate(R.id.editContactFragment, args)
+        view?.let {
+            val args = Bundle().apply {
+                putString(EditContactFragment.ARG_CONTACT_EDIT_ID, contactId.toString())
+            }
+            Navigation.findNavController(it).navigate(R.id.editContactFragment, args)
             mContactAdapter.notifyDataSetChanged()
         }
     }
 
     override fun updateContactList(contactModelList: List<ContactModel>) {
-        mContactList = ArrayList()
-        mContactList.addAll(contactModelList)
-        mContactAdapter.updateList(mContactList)
+        mContactAdapter.updateList(contactModelList)
     }
 
     override fun updateContactListSecondName(modelList: List<ContactModel>): List<ContactModel> {

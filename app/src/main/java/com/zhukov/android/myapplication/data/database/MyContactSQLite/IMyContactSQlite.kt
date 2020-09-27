@@ -11,7 +11,7 @@ interface IMyContactSQlite {
 
     fun getContacts(): List<ContactModel>
 
-    fun getContact(contactId: UUID): ContactModel
+    fun getContact(contactId: UUID): ContactModel?
 
     fun updateContact(contactModel: ContactModel)
 }

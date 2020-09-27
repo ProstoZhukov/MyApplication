@@ -189,7 +189,7 @@ import javax.inject.Inject
             mSocialMedia3!!.text = contactSocialMedia3
             mSocialMedia3!!.setTextColor(Color.BLUE)
         }
-        val contactInformation: String = contactModel.mContactInformation
+        val contactInformation: String? = contactModel.mContactInformation
         if (contactInformation == "") {
             mAboutContact?.setText(R.string.unknown_info)
         } else {

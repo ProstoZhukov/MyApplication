@@ -17,12 +17,10 @@ import java.util.*
 class ContactAdapter(onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<ContactAdapter.ContactHolder>() {
 
-    private var mContactModels: List<ContactModel>
+    private var mContactModels: MutableList<ContactModel> = ArrayList()
     private var mOnItemClickListener: OnItemClickListener = onItemClickListener
 
-    init {
-        mContactModels = ArrayList()
-    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.list_item_contact,
@@ -45,8 +43,8 @@ class ContactAdapter(onItemClickListener: OnItemClickListener) :
     }
 
     fun updateList(contactModelList: List<ContactModel>){
-        mContactModels.toMutableList().clear()
-        mContactModels.toMutableList().addAll(contactModelList)
+        mContactModels.clear()
+        mContactModels.addAll(contactModelList)
         notifyDataSetChanged()
     }
 
@@ -118,7 +116,7 @@ class ContactAdapter(onItemClickListener: OnItemClickListener) :
                      R.id.mnu_item_delete -> {
                          val newPosition = contactHolder.adapterPosition
                          notifyItemRemoved(newPosition)
-                         mContactModels.toMutableList().removeAt(newPosition)
+                         mContactModels.removeAt(newPosition)
                          notifyDataSetChanged()
                          mOnItemClickListener.deleteItem(mContactId)
                          true

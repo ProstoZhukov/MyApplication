@@ -14,8 +14,6 @@ interface IEditContactPresenter {
 
     fun updateContact(contactsModel: ContactModel)
 
-    fun onBackClicked()
-
     fun onPhotoImageClicked()
 
     fun photoUriLoaded(photoUri: String)

@@ -14,4 +14,6 @@ interface IEditContactView {
 
     fun itemAddSocialClicked()
 
+    fun showMessageText(text: String)
+
 }

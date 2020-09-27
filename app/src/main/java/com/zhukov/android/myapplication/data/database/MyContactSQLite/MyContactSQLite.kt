@@ -7,7 +7,6 @@ import com.zhukov.android.myapplication.data.database.databaseutils.ContactCurso
 import com.zhukov.android.myapplication.data.database.databaseutils.ContactDbSchema.ContactTable
 import com.zhukov.android.myapplication.data.database.model.ContactModel
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MyContactSQLite(contactBaseHelper: ContactBaseHelper) : IMyContactSQlite {
 
@@ -49,10 +48,9 @@ class MyContactSQLite(contactBaseHelper: ContactBaseHelper) : IMyContactSQlite {
     }
 
     override fun deleteContact(contactId: UUID) {
-        var uuidString: String = contactId.toString()
-        mDatabase?.delete(ContactTable.NAME,
+        mDatabase.delete(ContactTable.NAME,
             ContactTable.Cols.UUID + " = ?",
-            arrayOf(uuidString))
+            arrayOf(contactId.toString()))
     }
 
     override fun addContact(): UUID {
@@ -66,12 +64,12 @@ class MyContactSQLite(contactBaseHelper: ContactBaseHelper) : IMyContactSQlite {
         val cursorWrapper: ContactCursorWrapper = queryContacts(mDatabase,
         null,
         null)
-        val contactModelList: List<ContactModel> = ArrayList()
+        val contactModelList = arrayListOf<ContactModel>()
 
         try {
             cursorWrapper.moveToFirst()
-            while (!cursorWrapper.isAfterLast){
-                contactModelList.indexOf(cursorWrapper.getContactModel())
+            while (!cursorWrapper.isAfterLast) {
+                contactModelList.add(cursorWrapper.getContactModel())
                 cursorWrapper.moveToNext()
             }
         } finally {
@@ -80,18 +78,17 @@ class MyContactSQLite(contactBaseHelper: ContactBaseHelper) : IMyContactSQlite {
         return contactModelList
     }
 
-    override fun getContact(contactId: UUID): ContactModel {
+    override fun getContact(contactId: UUID): ContactModel? {
         val uuidString: String = contactId.toString()
         val cursorWrapper: ContactCursorWrapper = queryContacts(mDatabase,
         ContactTable.Cols.UUID + " = ?",
         arrayOf(uuidString))
-         try {
-             /* if (cursorWrapper.count === 0) {
-                 return null
-             }*/
-             cursorWrapper.moveToFirst()
-             cursorWrapper.getContactModel()
-             return cursorWrapper.getContactModel()
+        try {
+            if (cursorWrapper.count == 0) {
+                return null
+            }
+            cursorWrapper.moveToFirst()
+            return cursorWrapper.getContactModel()
         } finally {
             cursorWrapper.close()
         }
@@ -99,7 +96,7 @@ class MyContactSQLite(contactBaseHelper: ContactBaseHelper) : IMyContactSQlite {
 
     override fun updateContact(contactModel: ContactModel) {
         val uuidString: String = contactModel.mContactId.toString()
-        val values: ContentValues = getContentValues(ContactModel())
+        val values: ContentValues = getContentValues(contactModel)
 
         mDatabase.update(ContactTable.NAME, values,
         ContactTable.Cols.UUID + " = ?",
