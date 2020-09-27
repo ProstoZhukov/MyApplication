@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    tools:ignore="UnusedNavigation"
+    app:startDestination="@id/contactListFragment">
+
+    <fragment
+        android:id="@+id/contactListFragment"
+        android:name="com.zhukov.android.myapplicationlist.presentation.listcontact.view.ContactListFragment"
+        android:label="ContactListFragment" />
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="com.zhukov.android.myapplicationlist.presentation.infocontact.view.ContactFragment"
+        android:label="ContactFragment" />
+    <fragment
+        android:id="@+id/editContactFragment"
+        android:name="com.zhukov.android.myapplicationlist.presentation.editorcontact.view.EditContactFragment"
+        android:label="EditContactFragment" />
+</navigation>

@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Hello World</string>
+    <string name="contact_name">Имя</string>
+    <string name="contact_second_name">Фамилия</string>
+    <string name="contact_patronymic">Отчество</string>
+    <string name="contact_phone_number">Основной телефон</string>
+    <string name="contact_social_media">Ссылка на социальные сети</string>
+    <string name="contact_about_person">Дополнительная информация</string>
+    <string name="unknown_name">Неизвестное имя</string>
+    <string name="unknown_surname">Неизвестная фамилия</string>
+    <string name="unknown_number">Неизвестный номер</string>
+    <string name="item_edit">редактировать</string>
+    <string name="item_delete">удалить</string>
+    <string name="filter">Фильтр</string>
+    <string name="filter_menu_secondName">По фамили</string>
+    <string name="filter_menu_name">По имени</string>
+    <string name="unknown_number_now">Номер не указан!</string>
+    <string name="unknown_info">Информация неизвестна</string>
+    <string name="second_name">Фамилия:</string>
+    <string name="name">Имя:</string>
+    <string name="patronymic">Отчество:</string>
+    <string name="add_social">Добавить соцсеть</string>
+    <string name="add_number">Добавить номер</string>
+    <string name="hello_world">Hello World</string>
+
+</resources>
